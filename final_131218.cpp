@@ -11,7 +11,7 @@ struct Usuario{
 
 int carga_usuarios(struct Usuario*);
 char* carga_caract_no_permitidos();
-void valida_claves_usuarios(struct usuario*,int,char*);
+void valida_claves_usuarios(struct Usuario*,int,char*);
 int valida_clave(char*,char*);
 
 
@@ -19,27 +19,77 @@ int main()
 {
 	char opc;
 	Usuario users[100];
-	Usuario *p;
-	p = &users[0];
+	Usuario *pu;
+	pu = &users[0];
 	
-	int tamanio = carga_usuarios(p);
+	int i=0;
+	int cant;
 	
-	for(int i=0;i<tamanio;i++)
+	cant=carga_usuarios(pu);
+	char* pc = carga_caract_no_permitidos();
+	valida_claves_usuarios(pu,cant,pc);
+	
+	/*
+	IMPRESION DE STRUCTURE
+	for(i;i<cant;i++)
 	{
 		printf("Codigo de usuario: %s \n",users[i].cod_usu);
 		printf("Nombre de usuario: %s \n",users[i].nom_usu);
 		printf("Contrasena: %s \n",users[i].password);
 		printf("Mail: %s \n",users[i].mail);
+		i++;
 	}
-
+	*/
+	/*
+	IMPRESION DE CARACTERES NO VALIDOS
+	while(pc[i]!='\0')
+	{
+		printf("%c \n",pc[i]);
+		i++;
+	}
+	*/
 	return 0;
 }
+
+void valida_claves_usuarios(struct Usuario *pu,int cantidad,char *pc)
+{
+	
+}
+
+char* carga_caract_no_permitidos()
+{
+	char caracteres[50];
+	char *p;
+	char cont;
+	int i=0;
+	
+	printf("Carga de caracteres no permitidos para contrasenas \n");
+	
+	cont='s';
+		
+		do{
+			printf("Ingrese caracter no valido \n");
+			caracteres[i]=getchar();
+			i++;
+			printf("Desea ingresar otro caracter? s/n");
+			cont=getchar();
+			getchar();
+				
+		}while(cont=='s');
+		
+	p = &caracteres[0];	
+	
+	return p;
+}
+
 
 int carga_usuarios(struct Usuario *p)
 {
 	char cont;
 	int i=0;
-
+	
+	printf("Carga de usuarios \n");
+	
 	cont='s';
 		
 		do{
@@ -58,6 +108,6 @@ int carga_usuarios(struct Usuario *p)
 			getchar();
 				
 		}while(cont=='s');
-		
+			
 	return i;
 }
