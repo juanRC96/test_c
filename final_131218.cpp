@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include<iostream>
 
 struct Usuario{
@@ -29,17 +30,16 @@ int main()
 	char* pc = carga_caract_no_permitidos();
 	valida_claves_usuarios(pu,cant,pc);
 	
-	/*
-	IMPRESION DE STRUCTURE
+	//IMPRESION DE STRUCTURE
 	for(i;i<cant;i++)
 	{
 		printf("Codigo de usuario: %s \n",users[i].cod_usu);
 		printf("Nombre de usuario: %s \n",users[i].nom_usu);
 		printf("Contrasena: %s \n",users[i].password);
 		printf("Mail: %s \n",users[i].mail);
+		printf("Accion: %i \n",users[i].accion);
 		i++;
 	}
-	*/
 	/*
 	IMPRESION DE CARACTERES NO VALIDOS
 	while(pc[i]!='\0')
@@ -53,7 +53,31 @@ int main()
 
 void valida_claves_usuarios(struct Usuario *pu,int cantidad,char *pc)
 {
+	int i;
+	int j;
 	
+	
+	for(i=0;i<cantidad;i++)
+	{
+		if(strlen(pu[i].password)>6 && strlen(pu[i].password)<30)
+		{
+			for(j=0;j<strlen(pc);j++)
+			{
+		 	//strchr devuelve direccion de puntero si encuentra el caracter, caso contrario es NULL
+			if((strchr(pu[i].password, pc[j])) != NULL)
+			{
+				//las claves que deben ser cambiadas se le asigna 1 en accion
+				pu[i].accion=1;
+			}
+			j++;
+			}
+		}
+		else
+		{
+			pu[i].accion=1;
+		}
+			
+	}	
 }
 
 char* carga_caract_no_permitidos()
