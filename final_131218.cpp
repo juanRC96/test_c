@@ -12,8 +12,8 @@ struct Usuario{
 
 int carga_usuarios(struct Usuario*);
 char* carga_caract_no_permitidos();
-void valida_claves_usuarios(struct Usuario*,int,char*);
-int valida_clave(char*,char*);
+void valida_claves_usuarios(struct Usuario*,int,char*,int);
+void envia_mail(struct Usuario*,int);
 
 
 int main()
@@ -23,22 +23,23 @@ int main()
 	Usuario *pu;
 	pu = &users[0];
 	
-	int i=0;
-	int cant;
 	
-	cant=carga_usuarios(pu);
+	
+	int cant=carga_usuarios(pu);
 	char* pc = carga_caract_no_permitidos();
-	valida_claves_usuarios(pu,cant,pc);
+	int tam = strlen(pc);
+	valida_claves_usuarios(pu,cant,pc,tam);
+	envia_mail(pu,cant);
+	
 	
 	//IMPRESION DE STRUCTURE
-	for(i;i<cant;i++)
+	for(int i=0;i<cant;i++)
 	{
 		printf("Codigo de usuario: %s \n",users[i].cod_usu);
 		printf("Nombre de usuario: %s \n",users[i].nom_usu);
 		printf("Contrasena: %s \n",users[i].password);
 		printf("Mail: %s \n",users[i].mail);
 		printf("Accion: %i \n",users[i].accion);
-		i++;
 	}
 	/*
 	IMPRESION DE CARACTERES NO VALIDOS
@@ -51,18 +52,32 @@ int main()
 	return 0;
 }
 
-void valida_claves_usuarios(struct Usuario *pu,int cantidad,char *pc)
+void envia_mail(struct Usuario *pu,int cantidad)
 {
-	int i;
-	int j;
+	printf("Enviando mails... \n");
 	
+	for(int i=0;i<cantidad;i++)
+	{
+		if(pu[i].accion==1)
+		{
+			printf("ENVIAR MAIL A USUARIO %s SOLICITANDO CAMBIO DE CONTRASENA \n",pu[i].nom_usu);
+		}
+	}
+}
+
+void valida_claves_usuarios(struct Usuario *pu,int cantidad,char *pc,int tam)
+{
+	printf("Validando claves... \n");
 	
-	for(i=0;i<cantidad;i++)
+	//asigno tamanio de pc(coleccion de caracteres no validos) para tener un limite para el for que lo recorre, podria enviar como parametro desde el main el tamanio (es lo mismo)
+	//int tamanio = strlen(pc);
+	
+	for(int i=0;i<cantidad;i++)
 	{
 		//longitud minima y maxima de contrasena
-		if(strlen(pu[i].password)>6 && strlen(pu[i].password)<30)
+		if((strlen(pu[i].password))>3 && (strlen(pu[i].password))<30)
 		{
-			for(j=0;j<strlen(pc);j++)
+			for(int j=0;j<tam;j++)
 			{
 		 	//strchr devuelve direccion de puntero si encuentra el caracter, caso contrario es NULL
 			if((strchr(pu[i].password, pc[j])) != NULL)
@@ -70,7 +85,6 @@ void valida_claves_usuarios(struct Usuario *pu,int cantidad,char *pc)
 				//las claves que deben ser cambiadas se le asigna 1 en accion
 				pu[i].accion=1;
 			}
-			j++;
 			}
 		}
 		else
@@ -85,10 +99,10 @@ char* carga_caract_no_permitidos()
 {
 	char caracteres[50];
 	char *p;
-	char cont;
+	int cont;
 	int i=0;
 	
-	printf("Carga de caracteres no permitidos para contrasenas \n");
+	printf("Carga de caracteres no permitidos para contrasenas \n\n");
 	
 	cont='s';
 		
@@ -96,11 +110,11 @@ char* carga_caract_no_permitidos()
 			printf("Ingrese caracter no valido \n");
 			caracteres[i]=getchar();
 			i++;
-			printf("Desea ingresar otro caracter? s/n");
-			cont=getchar();
+			printf("Desea ingresar otro caracter? 0:No / 1:Si \n");
+			scanf("%d",&cont);
 			getchar();
 				
-		}while(cont=='s');
+		}while(cont==1);
 		
 	p = &caracteres[0];	
 	
@@ -110,13 +124,11 @@ char* carga_caract_no_permitidos()
 
 int carga_usuarios(struct Usuario *p)
 {
-	char cont;
+	int cont;
 	int i=0;
 	
-	printf("Carga de usuarios \n");
+	printf("Carga de usuarios \n\n");
 	
-	cont='s';
-		
 		do{
 			printf("Ingrese codigo de usuario \n");
 			gets(p[i].cod_usu);
@@ -128,11 +140,11 @@ int carga_usuarios(struct Usuario *p)
 			gets(p[i].mail);
 			p[i].accion=0;
 			i++;
-			printf("Desea ingresar otro alumno? s/n");
-			cont=getchar();
+			printf("Desea ingresar otro usuario? 0:No / 1:Si \n");
+			scanf("%d",&cont);
 			getchar();
 				
-		}while(cont=='s');
+		}while(cont==1);
 			
 	return i;
 }
