@@ -59,6 +59,7 @@ void valida_claves_usuarios(struct Usuario *pu,int cantidad,char *pc)
 	
 	for(i=0;i<cantidad;i++)
 	{
+		//longitud minima y maxima de contrasena
 		if(strlen(pu[i].password)>6 && strlen(pu[i].password)<30)
 		{
 			for(j=0;j<strlen(pc);j++)
