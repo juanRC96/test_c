@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include<iostream>
+#include <iostream>
 
 struct Usuario{
 	char cod_usu[8];
@@ -10,7 +10,7 @@ struct Usuario{
 	int accion;
 };
 
-int carga_usuarios(struct Usuario*);
+void carga_usuarios(struct Usuario*,int*);
 char* carga_caract_no_permitidos();
 void valida_claves_usuarios(struct Usuario*,int,char*,int);
 void envia_mail(struct Usuario*,int);
@@ -20,16 +20,18 @@ int main()
 {
 	char opc;
 	Usuario users[100];
+	/*
 	Usuario *pu;
 	pu = &users[0];
+	*/
+	int cant;
 	
 	
-	
-	int cant=carga_usuarios(pu);
+	carga_usuarios(users,&cant);
 	char* pc = carga_caract_no_permitidos();
 	int tam = strlen(pc);
-	valida_claves_usuarios(pu,cant,pc,tam);
-	envia_mail(pu,cant);
+	valida_claves_usuarios(users,cant,pc,tam);
+	envia_mail(users,cant);
 	
 	
 	//IMPRESION DE STRUCTURE
@@ -122,7 +124,7 @@ char* carga_caract_no_permitidos()
 }
 
 
-int carga_usuarios(struct Usuario *p)
+void carga_usuarios(struct Usuario *p,int* cant)
 {
 	int cont;
 	int i=0;
@@ -145,6 +147,6 @@ int carga_usuarios(struct Usuario *p)
 			getchar();
 				
 		}while(cont==1);
-			
-	return i;
+		*cant=i;
+		
 }
