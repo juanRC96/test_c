@@ -54,20 +54,20 @@ int main()
 	return 0;
 }
 
-void envia_mail(struct Usuario *pu,int cantidad)
+void envia_mail(struct Usuario *us,int cantidad)
 {
 	printf("Enviando mails... \n");
 	
 	for(int i=0;i<cantidad;i++)
 	{
-		if(pu[i].accion==1)
+		if(us[i].accion==1)
 		{
-			printf("ENVIAR MAIL A USUARIO %s SOLICITANDO CAMBIO DE CONTRASENA \n",pu[i].nom_usu);
+			printf("ENVIAR MAIL A USUARIO %s SOLICITANDO CAMBIO DE CONTRASENA \n",us[i].nom_usu);
 		}
 	}
 }
 
-void valida_claves_usuarios(struct Usuario *pu,int cantidad,char *pc,int tam)
+void valida_claves_usuarios(struct Usuario *us,int cantidad,char *pc,int tam)
 {
 	printf("Validando claves... \n");
 	
@@ -77,21 +77,21 @@ void valida_claves_usuarios(struct Usuario *pu,int cantidad,char *pc,int tam)
 	for(int i=0;i<cantidad;i++)
 	{
 		//longitud minima y maxima de contrasena
-		if((strlen(pu[i].password))>3 && (strlen(pu[i].password))<30)
+		if((strlen(us[i].password))>3 && (strlen(us[i].password))<30)
 		{
 			for(int j=0;j<tam;j++)
 			{
 		 	//strchr devuelve direccion de puntero si encuentra el caracter, caso contrario es NULL
-			if((strchr(pu[i].password, pc[j])) != NULL)
+			if((strchr(us[i].password, pc[j])) != NULL)
 			{
 				//las claves que deben ser cambiadas se le asigna 1 en accion
-				pu[i].accion=1;
+				us[i].accion=1;
 			}
 			}
 		}
 		else
 		{
-			pu[i].accion=1;
+			us[i].accion=1;
 		}
 			
 	}	
@@ -124,7 +124,7 @@ char* carga_caract_no_permitidos()
 }
 
 
-void carga_usuarios(struct Usuario *p,int* cant)
+void carga_usuarios(struct Usuario *us,int* cant)
 {
 	int cont;
 	int i=0;
@@ -133,14 +133,14 @@ void carga_usuarios(struct Usuario *p,int* cant)
 	
 		do{
 			printf("Ingrese codigo de usuario \n");
-			gets(p[i].cod_usu);
+			gets(us[i].cod_usu);
 			printf("Ingrese nombre de usuario \n");
-			gets(p[i].nom_usu);
+			gets(us[i].nom_usu);
 			printf("Ingrese contrasena \n");
-			gets(p[i].password);
+			gets(us[i].password);
 			printf("Ingrese mail \n");
-			gets(p[i].mail);
-			p[i].accion=0;
+			gets(us[i].mail);
+			us[i].accion=0;
 			i++;
 			printf("Desea ingresar otro usuario? 0:No / 1:Si \n");
 			scanf("%d",&cont);
