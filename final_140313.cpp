@@ -38,8 +38,8 @@ int main()
 
 struct modif *reemplaza (char *text, int tam, char car1, char car2)
 {
+	modif *p;
 	int contMod=0;
-	
 	modif nuevaStruct;
 	
 	for(int i=0;i<tam;i++)
@@ -54,15 +54,19 @@ struct modif *reemplaza (char *text, int tam, char car1, char car2)
 	strcpy(nuevaStruct.textoMod, text);
 
 	nuevaStruct.cantidadReemplazos=contMod;
-
-	return &nuevaStruct;
+	
+	p=&nuevaStruct;
+	
+	return p;
 }
 
 char* carga(int* tam)
 {
+	char *p;
 	char texto[1000];
 	printf("Ingrese un texto \n");
 	gets(texto);
 	*tam=strlen(texto);
-	return texto;
+	p=&texto[0];
+	return p;
 }
