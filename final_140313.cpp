@@ -14,16 +14,49 @@ int main()
 {
 	char* texto;
 	int tamanio;
+	char car1;
+	char car2;
 
 	texto=carga(&tamanio);
 	
-	printf("%s %i",texto,tamanio);
+	printf("Ingrese caracter a reemplazar \n");
+	car1=getchar();
+	getchar();
+	printf("Ingrese caracter a agregar \n");
+	car2=getchar();
+	
+	
+	modif *pstructNueva = reemplaza (texto,tamanio,car1,car2);
+	
+	modif structNueva = *pstructNueva;
+
+	printf("Texto modificado: %s  Cantidad de modificaciones: %i",structNueva.textoMod,structNueva.cantidadReemplazos);
 	
 	
 	return 0;
 }
 
+struct modif *reemplaza (char *text, int tam, char car1, char car2)
+{
+	int contMod=0;
+	
+	modif nuevaStruct;
+	
+	for(int i=0;i<tam;i++)
+	{
+		if(text[i]==car1)
+		{
+			text[i]=car2;
+			contMod++;
+		}
+	}
+	
+	strcpy(nuevaStruct.textoMod, text);
 
+	nuevaStruct.cantidadReemplazos=contMod;
+
+	return &nuevaStruct;
+}
 
 char* carga(int* tam)
 {
